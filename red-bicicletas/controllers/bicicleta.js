@@ -19,7 +19,7 @@ exports.bicicleta_create_post = function(req, res){
 exports.bicicleta_update_get = function(req, res){
     var bici = Bicicleta.findbyId(req.params.id)
 
-    res.render('bicicletas/create', {bici})
+    res.render('bicicletas/update', {bici})
 }
 
 exports.bicicleta_update_post = function(req, res){
