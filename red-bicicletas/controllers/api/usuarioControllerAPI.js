@@ -13,7 +13,7 @@ exports.usuario_list = async function(req, res){
 
 exports.usuario_create = async function(req, res){
     try {
-        const usuario = await Usuario.create({nombre: req.body.nombre});
+        const usuario = await Usuario.create({id: req.body.id, nombre: req.body.nombre});
         res.status(200).json({
             usuario: usuario
         });
@@ -24,7 +24,7 @@ exports.usuario_create = async function(req, res){
 
 exports.usuario_delete = async function(req, res){
     try {
-        await Usuario.findByIdAndRemove(req.body.id);
+        await Usuario.findByIdAndRemove(req.body._id);
         res.status(204).send();
     } catch (error) {
         res.status(500).send(error.message);
@@ -33,7 +33,7 @@ exports.usuario_delete = async function(req, res){
 
 exports.usuario_update_post = async function(req, res){
     try {
-        const usuario = await Usuario.findByIdAndUpdate(req.body.id, {nombre: req.body.nombre}, {new: true});
+        const usuario = await Usuario.findByIdAndUpdate(req.body._id, {nombre: req.body.nombre}, {new: true});
         res.status(200).json({
             usuario: usuario
         });

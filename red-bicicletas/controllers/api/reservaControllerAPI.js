@@ -13,23 +13,18 @@ exports.reserva_list = async function(req, res) {
 };
 
 exports.reserva_create = async function(req, res) {
-    const bici = new Bicicleta({
-        color: req.body.color,
-        modelo: req.body.modelo,
-        ubicacion: [req.body.lat, req.body.lng]
-    });
-
     try {
-        const nuevaBici = await Bicicleta.add(bici);
-        const reserva = new Reserva({
-            desde: moment(req.body.desde, "DD/MM/YYYY"),
-            hasta: moment(req.body.hasta, "DD/MM/YYYY"),
-            bicicleta: nuevaBici._id,
-            usuario: req.user._id
-        });
 
-        const nuevaReserva = await reserva.save();
-        res.status(200).json({reserva: nuevaReserva});
+        const reserva = await Reserva.create(
+            {   
+                id: req.body.id, 
+                desde: moment(req.body.desde, "DD/MM/YYYY"),
+                hasta: moment(req.body.hasta, "DD/MM/YYYY"),
+                bicicleta: req.body.bicicleta,
+                usuario: req.body.usuario
+            });
+
+        res.status(200).json({reserva: reserva});
     } catch (error) {
         res.status(500).json({error: error.message});
     }
@@ -37,7 +32,7 @@ exports.reserva_create = async function(req, res) {
 
 exports.reserva_delete = async function(req, res) {
     try {
-        await Reserva.findByIdAndDelete(req.body.id);
+        await Reserva.findByIdAndDelete(req.body._id);
         res.status(204).send();
     } catch (error) {
         res.status(500).json({error: error.message});
@@ -58,6 +53,23 @@ exports.reserva_update_post = async function(req, res) {
     }
 };
 
+exports.reserva_update_post = async function(req, res){
+    try {
+        const reserva = await Reserva.findByIdAndUpdate(req.body._id, 
+            {
+                desde: moment(req.body.desde, "DD/MM/YYYY"),
+                hasta: moment(req.body.hasta, "DD/MM/YYYY"),
+                bicicleta: req.body.bicicleta,
+                usuario: req.body.usuario
+            }, {new: true}
+            );
+        res.status(200).json({
+            reserva: reserva
+        });
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
 
 // var Reserva = require('../../models/reserva');
 // var Bicicleta = require('../../models/bicicleta');
