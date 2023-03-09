@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 const Bicicleta = require('./models/bicicleta');
+const Usuario = require('./models/usuario');
+const Token = require('./models/token');
 
 // const bici = Bicicleta.createInstance(1, "rojo", "urbana", [10.0, 20.0]);
 // console.log(bici);
